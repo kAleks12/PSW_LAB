@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy
 from sklearn.decomposition import PCA
-from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.naive_bayes import GaussianNB
 
@@ -98,8 +97,8 @@ def zad3(img, labels):
     rsk = RepeatedStratifiedKFold(n_splits=2, n_repeats=5, random_state=42)
 
     for name, rep in representations.items():
-        mean_accuracy, std_dev = evaluate(classifier, rsk, rep, clean_labels)
-        print(f'{name} {mean_accuracy:.3f} ({std_dev:.3f})')
+        scores = cross_val_score(classifier, rep, clean_labels, cv=rsk, scoring='accuracy')
+        print(f'{name} {scores.mean():.3f} ({scores.std():.3f})')
 
 
 if __name__ == '__main__':
