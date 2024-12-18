@@ -2,10 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import skimage as ski
 
+
 def normalize(img):
     img -= np.min(img)
     img /= np.max(img)
     return img
+
 
 def show_fft_results(raw_img):
     # Define objects
@@ -20,7 +22,7 @@ def show_fft_results(raw_img):
     ax[0, 1].imshow(img_real, cmap='magma')
     ax[0, 2].imshow(img_imag, cmap='magma')
 
-    phi = np.arctan2(img_ft.imag,  img_ft.real)
+    phi = np.arctan2(img_ft.imag, img_ft.real)
     ax[1, 0].imshow(phi, cmap='magma')
 
     mag = np.log(np.abs(img_ft) + 1)
