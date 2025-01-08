@@ -8,10 +8,10 @@ from sklearn.preprocessing import StandardScaler
 
 
 def main():
+    # Task 1
     fig, ax = plt.subplots(1, 2, figsize=(12, 7))
     img = np.zeros((100, 100, 3))
     gt = np.zeros((100, 100))
-    np.random.seed(1299)
     for _ in range(3):
         center = (np.random.randint(40, 60), np.random.randint(40, 60))
         rad = np.random.randint(10, 40)
@@ -25,10 +25,12 @@ def main():
     noise = np.random.normal(0, 16, img.shape)
     img = np.clip(img + noise, 0, 255).astype(int)
 
-    ax[0].imshow(img, cmap='binary')
-    ax[1].imshow(gt, cmap='nipy_spectral')
+    ax[0].imshow(img)
+    ax[1].imshow(gt)
 
     plt.show()
+
+    # Task 2
 
     img_res = img.reshape(-1, img.shape[2])
     x, y = np.meshgrid(range(img.shape[0]), range(img.shape[1]), indexing='ij')
@@ -42,6 +44,8 @@ def main():
 
     print(X.shape, y.shape)
     print(X[1, :], y[1])
+
+    # Task 3
 
     fig, ax = plt.subplots(2, 3, figsize=(12, 7))
     models = [KMeans(), MiniBatchKMeans(), Birch(), DBSCAN()]
@@ -58,7 +62,7 @@ def main():
 
     for pred in results:
         part_img = pred.reshape(gt.shape)
-        score = adjusted_rand_score(y, pred)
+        score = round(adjusted_rand_score(y, pred), 4)
         ax[row, column].imshow(part_img)
         ax[row, column].set_title(f"{score}")
 
