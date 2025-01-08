@@ -15,15 +15,14 @@ def make_hist_simple(img):
     u, c = np.unique(img, return_counts=True)
     c_full[u] = c
 
-    c_prob = c_full / np.sum(c_full)
-    return np.linspace(0, 255, 256), c_prob
+    return np.linspace(0, 255, 256), c_full
 
 
 def main():
     fig, ax = plt.subplots(1, 3, figsize=(12, 7))
     img = skimage.data.chelsea().astype(np.uint8)
     img = np.mean(img, axis=2)
-    ax[0].imshow(img, cmap='binary')
+    ax[0].imshow(img, cmap='binary_r')
 
     img_fil = gaussian_filter(img, sigma=1)
     kernel = np.array([[1, 1, 1], [1, -8, 1], [1, 1, 1]])
@@ -35,8 +34,9 @@ def main():
     py = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])
     prewitt_x = correlate(img_fil, px)
     prewitt_y = correlate(img_fil, py)
+    prewitt_x[prewitt_x < 0] = 0
+    prewitt_y[prewitt_y < 0] = 0
     img_gradient = np.abs(prewitt_x) + np.abs(prewitt_y)
-    img_gradient[img_gradient < 0] = 0
 
     ax[2].imshow(img_gradient, cmap='binary')
 
